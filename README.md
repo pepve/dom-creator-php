@@ -7,7 +7,7 @@ A limited but simple API for creating DOMDocumentS in PHP.
 
 - Elements that contain text
 - Elements that contain other elements
-- Attributes
+- Attributes, optionally qualified
 - Namespaces, as long as the whole fragment is of the same one
 - Adding in (parts of) another DOMDocument
 
