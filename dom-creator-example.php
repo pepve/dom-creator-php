@@ -11,6 +11,7 @@ function printXml($domCreator)
 
 $foo = DomCreator::create('http://example.com/foo', 'f', 'foo');
 
+$foo->ident->_type = 'person';
 $foo->ident->name = 'My Name';
 $foo->ident->number = '1234';
 $foo->content = 'Here is the content..';
@@ -18,7 +19,7 @@ $foo->content = 'Here is the content..';
 printXml($foo);
 
 //<f:foo xmlns:f="http://example.com/foo">
-//  <f:ident>
+//  <f:ident type="person">
 //    <f:name>My Name</f:name>
 //    <f:number>1234</f:number>
 //  </f:ident>
@@ -39,6 +40,10 @@ foreach (array('A', 'B', 'C') as $letter)
 }
 $bar->Sub = $subBar;
 
+$dom = new DOMDocument();
+$dom->appendChild($dom->createElement('Test', 'value'));
+$bar->DomPart = $dom;
+
 printXml($bar);
 
 //<Bar>
@@ -50,6 +55,9 @@ printXml($bar);
 //    <B>Letter B</B>
 //    <C>Letter C</C>
 //  </Sub>
+//  <DomPart>
+//    <Test>value</Test>
+//  </DomPart>
 //</Bar>
 
 
