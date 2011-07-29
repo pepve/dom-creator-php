@@ -2,15 +2,20 @@
 
 require 'dom-creator.php';
 
+function printXml($domCreator)
+{
+	$document = $domCreator->getDocument();
+	$document->formatOutput = true;
+	echo $document->saveXml();
+}
+
 $foo = DomCreator::create('http://example.com/foo', 'f', 'foo');
 
 $foo->ident->name = 'My Name';
 $foo->ident->number = '1234';
 $foo->content = 'Here is the content..';
 
-$fooDom = $foo->getDocument();
-$fooDom->formatOutput = true;
-echo $fooDom->saveXml();
+printXml($foo);
 
 //<f:foo xmlns:f="http://example.com/foo">
 //  <f:ident>
@@ -34,9 +39,7 @@ foreach (array('A', 'B', 'C') as $letter)
 }
 $bar->Sub = $subBar;
 
-$barDom = $bar->getDocument();
-$barDom->formatOutput = true;
-echo $barDom->saveXml();
+printXml($bar);
 
 //<Bar>
 //  <One>1</One>
@@ -48,4 +51,26 @@ echo $barDom->saveXml();
 //    <C>Letter C</C>
 //  </Sub>
 //</Bar>
+
+
+$dom = new DOMDocument();
+$test = $dom->createElement('test', 'value');
+$dom->appendChild($test);
+$attr = $dom->createAttribute('attr');
+$attr->value = 1;
+$test->appendChild($attr);
+
+$super = DomCreator::create('http://test.com/test', 'tst', 'element');
+$super->hello = 'world';
+$super->hello->_to = 'you';
+$super->dom = $dom;
+
+printXml($super);
+
+//<tst:element xmlns:tst="http://test.com/test">
+//  <tst:hello tst:to="you">world</tst:hello>
+//  <tst:dom>
+//    <test attr="1">value</test>
+//  </tst:dom>
+//</tst:element>
 

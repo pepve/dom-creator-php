@@ -3,6 +3,8 @@
 class DomCreator
 {
 
+	const ATTRIBUTE_SIGN = '_';
+
 	private $_doc;
 	
 	private $_node;
@@ -63,30 +65,49 @@ class DomCreator
 	}
 
 	/**
-	 * Creates a new element with text content.
+	 * Creates a new element or attribute with some content.
 	 */
 	public function __set($name, $value)
 	{
-		$this->_element($name, $value);
+		if (strpos($name, self::ATTRIBUTE_SIGN) === 0)
+		{
+			$attributeName = substr($name, strlen(self::ATTRIBUTE_SIGN));
+			$attribute = $this->_doc->createAttributeNS($this->_nsUri, $this->_prefix . $attributeName);
+			$attribute->value = $value;
+			$this->_node->appendChild($attribute);
+		}
+		else
+		{
+			$element = $this->_element($name, $value);
+			if ($value instanceof self)
+			{
+				$this->_import($element, $value->_node->childNodes);
+			}
+			else if ($value instanceof DOMNode)
+			{
+				$this->_import($element, $value->childNodes);
+			}
+			else
+			{
+				$text = $this->_doc->createTextNode($value);
+				$element->appendChild($text);
+			}
+		}
 	}
 	
-	private function _element($name, $value = null)
+	private function _import($element, $nodes)
+	{
+		foreach ($nodes as $node)
+		{
+			$imported = $this->_doc->importNode($node, true);
+			$element->appendChild($imported);
+		}
+	}
+	
+	private function _element($name)
 	{
 		$element = $this->_doc->createElementNS($this->_nsUri, $this->_prefix . $name);
 		$this->_node->appendChild($element);
-		if ($value instanceof self)
-		{
-			foreach ($value->_node->childNodes as $child)
-			{
-				$importedChild = $this->_doc->importNode($child, true);
-				$element->appendChild($importedChild);
-			}
-		}
-		else if ($value !== null)
-		{
-			$text = $this->_doc->createTextNode($value);
-			$element->appendChild($text);
-		}
 		return $element;
 	}
 	
