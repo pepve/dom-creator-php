@@ -39,13 +39,13 @@ Ouput:
 
 ## Example 2
 
-    $bar = DomCreator::create(null, null, 'Bar');
+    $bar = DomCreator::createNoNamespace('Bar');
     
     $bar->One = 1;
     $bar->Two = 2;
     $bar->Three = 3;
     
-    $subBar = DomCreator::create();
+    $subBar = DomCreator::createFragmentNoNamespace();
     foreach (array('A', 'B', 'C') as $letter)
     {
         $subBar->$letter = "Letter $letter";
