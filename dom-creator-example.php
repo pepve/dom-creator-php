@@ -15,6 +15,7 @@ $foo->ident->_type = 'person';
 $foo->ident->name = 'My Name';
 $foo->ident->number = '1234';
 $foo->content = 'Here is the content..';
+$foo->show->that->nesting->is->easy;
 
 printXml($foo);
 

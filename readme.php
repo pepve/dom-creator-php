@@ -10,11 +10,11 @@ A limited but simple API for creating DOMDocumentS in PHP.
 - Attributes, optionally qualified
 - Namespaces, as long as the whole fragment is of the same one
 - Adding in (parts of) another DOMDocument
+<?php
 
+require 'dom-creator.php';
 
-## Example 1
-
-```php
+$examples['Example 1'] = <<<'EOT'
 $foo = DomCreator::create('http://example.com/foo', 'f', 'foo');
 
 $foo->ident->_type = 'person';
@@ -25,25 +25,9 @@ $foo->content = 'Here is the content..';
 $fooDom = $foo->getDocument();
 $fooDom->formatOutput = true;
 echo $fooDom->saveXml();
-```
+EOT;
 
-Output:
-
-```xml
-<?xml version="1.0"?>
-<f:foo xmlns:f="http://example.com/foo">
-  <f:ident type="person">
-    <f:name>My Name</f:name>
-    <f:number>1234</f:number>
-  </f:ident>
-  <f:content>Here is the content..</f:content>
-</f:foo>
-```
-
-
-## Example 2
-
-```php
+$examples['Example 2'] = <<<'EOT'
 $bar = DomCreator::createNoNamespace('Bar');
 
 $bar->One = 1;
@@ -64,23 +48,15 @@ $bar->DomPart = $dom;
 $barDom = $bar->getDocument();
 $barDom->formatOutput = true;
 echo $barDom->saveXml();
-```
+EOT;
 
-Output:
+foreach ($examples as $title => $code)
+{
+	echo "\n\n## $title\n\n";
+	echo "```php\n$code\n```\n\n";
+	echo "Output:\n\n";
+	echo "```xml\n";
+	eval($code);
+	echo "```\n";
+}
 
-```xml
-<?xml version="1.0"?>
-<Bar>
-  <One>1</One>
-  <Two>2</Two>
-  <Three>3</Three>
-  <Sub>
-    <A>Letter A</A>
-    <B>Letter B</B>
-    <C>Letter C</C>
-  </Sub>
-  <DomPart>
-    <Test>value</Test>
-  </DomPart>
-</Bar>
-```
