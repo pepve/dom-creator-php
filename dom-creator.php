@@ -24,7 +24,7 @@ class DomCreator
 			$qualifyAttributes = false)
 	{
 		$doc = new DOMDocument();
-		$prefix = empty($nsPrefix) ? '' : $nsPrefix . ':';
+		$prefix = $nsPrefix === null ? '' : $nsPrefix . ':';
 		$xml = new self($doc, $doc, $nsUri, $prefix, $qualifyAttributes);
 		return $xml->$root;
 	}
