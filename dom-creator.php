@@ -13,23 +13,29 @@ class DomCreator
 	
 	private $_prefix;
 	
+	private $_qualifyAttributes;
+	
 	/**
-	 * Start creating a new DOMDocument with the specified namespace URI, namespace prefix, and root element.
+	 * Start creating a new DOMDocument with the specified namespace URI,
+	 * namespace prefix, root element, and whether attributes will be qualified.
 	 */
-	public static function create($nsUri = null, $nsPrefix = null, $root = 'root')
+	public static function create($nsUri = null, $nsPrefix = null,
+			$root = 'root', $qualifyAttributes = false)
 	{
 		$doc = new DOMDocument();
 		$prefix = empty($nsPrefix) ? '' : $nsPrefix . ':';
-		$xml = new self($doc, $doc, $nsUri, $prefix);
+		$xml = new self($doc, $doc, $nsUri, $prefix, $qualifyAttributes);
 		return $xml->$root;
 	}
 
-	private function __construct($doc, $node, $nsUri, $prefix)
+	private function __construct($doc, $node, $nsUri, $prefix,
+			$qualifyAttributes)
 	{
 		$this->_doc = $doc;
 		$this->_node = $node;
 		$this->_nsUri = $nsUri;
 		$this->_prefix = $prefix;
+		$this->_qualifyAttributes = $qualifyAttributes;
 	}
 
 	/**
@@ -41,7 +47,7 @@ class DomCreator
 	}
 
 	/**
-	 * Get the underlying DOMElement of the DomCreator node.
+	 * Get the underlying DOMElement of this DomCreator node.
 	 */
 	public function getNode()
 	{
@@ -49,11 +55,13 @@ class DomCreator
 	}
 
 	/**
-	 * Creates a new element to contain others, or returns the last one if it has the same name.
+	 * Creates a new element to contain others, or returns the last one if it
+	 * has the same name.
 	 */
 	public function __get($name)
 	{
-		if ($this->_node->lastChild !== null && $this->_node->lastChild->nodeName === $this->_prefix . $name)
+		if ($this->_node->lastChild !== null &&
+				$this->_node->lastChild->nodeName === $this->_prefix . $name)
 		{
 			$element = $this->_node->lastChild;
 		}
@@ -61,7 +69,8 @@ class DomCreator
 		{
 			$element = $this->_element($name);
 		}
-		return new self($this->_doc, $element, $this->_nsUri, $this->_prefix);
+		return new self($this->_doc, $element, $this->_nsUri, $this->_prefix,
+				$this->_qualifyAttributes);
 	}
 
 	/**
@@ -72,7 +81,15 @@ class DomCreator
 		if (strpos($name, self::ATTRIBUTE_SIGN) === 0)
 		{
 			$attributeName = substr($name, strlen(self::ATTRIBUTE_SIGN));
-			$attribute = $this->_doc->createAttributeNS($this->_nsUri, $this->_prefix . $attributeName);
+			if ($this->_qualifyAttributes)
+			{
+				$attribute = $this->_doc->createAttributeNS($this->_nsUri,
+						$this->_prefix . $attributeName);
+			}
+			else
+			{
+				$attribute = $this->_doc->createAttribute($attributeName);
+			}
 			$attribute->value = $value;
 			$this->_node->appendChild($attribute);
 		}
@@ -106,7 +123,8 @@ class DomCreator
 	
 	private function _element($name)
 	{
-		$element = $this->_doc->createElementNS($this->_nsUri, $this->_prefix . $name);
+		$element = $this->_doc->createElementNS($this->_nsUri,
+				$this->_prefix . $name);
 		$this->_node->appendChild($element);
 		return $element;
 	}
