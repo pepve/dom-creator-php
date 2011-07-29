@@ -15,6 +15,7 @@ A limited but simple API for creating DOMDocumentS in PHP.
 ## Example 1
 
 ```php
+<?
 $foo = DomCreator::create('http://example.com/foo', 'f', 'foo');
 
 $foo->ident->_type = 'person';
@@ -44,6 +45,7 @@ Output:
 ## Example 2
 
 ```php
+<?
 $bar = DomCreator::createNoNamespace('Bar');
 
 $bar->One = 1;

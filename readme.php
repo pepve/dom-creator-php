@@ -53,7 +53,7 @@ EOT;
 foreach ($examples as $title => $code)
 {
 	echo "\n\n## $title\n\n";
-	echo "```php\n$code\n```\n\n";
+	echo "```php\n<?\n$code\n```\n\n";
 	echo "Output:\n\n";
 	echo "```xml\n";
 	eval($code);
