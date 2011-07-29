@@ -17,15 +17,44 @@ class DomCreator
 	
 	/**
 	 * Start creating a new DOMDocument with the specified namespace URI,
-	 * namespace prefix, root element, and whether attributes will be qualified.
+	 * namespace prefix, root element, and whether attributes will be
+	 * qualified.
 	 */
-	public static function create($nsUri = null, $nsPrefix = null,
-			$root = 'root', $qualifyAttributes = false)
+	public static function create($nsUri, $nsPrefix, $root,
+			$qualifyAttributes = false)
 	{
 		$doc = new DOMDocument();
 		$prefix = empty($nsPrefix) ? '' : $nsPrefix . ':';
 		$xml = new self($doc, $doc, $nsUri, $prefix, $qualifyAttributes);
 		return $xml->$root;
+	}
+
+	/**
+	 * Start creating a new DOMDocument without a namespace, with the specified
+	 * root element.
+	 */
+	public static function createNoNamespace($root)
+	{
+		return self::create(null, null, $root);
+	}
+
+	/**
+	 * Start creating a new DOMDocument -- to be used as a fragment -- with the
+	 * specified namespace URI, namespace prefix, and whether attributes will
+	 * be qualified.
+	 */
+	public static function createFragment($nsUri, $nsPrefix,
+			$qualifyAttributes = false)
+	{
+		return self::create($nsUri, $nsPrefix, 'fragment', $qualifyAttributes);
+	}
+
+	/**
+	 * Start creating a new DOMDocument -- to be used as a fragment.
+	 */
+	public static function createFragmentNoNamespace()
+	{
+		return self::createFragment(null, null);
 	}
 
 	private function __construct($doc, $node, $nsUri, $prefix,
