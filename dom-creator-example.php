@@ -83,3 +83,19 @@ printXml($super);
 //  </tst:dom>
 //</tst:element>
 
+
+$rep = DomCreator::createNoNamespace('Repetitive');
+
+foreach (range(5, 80, 7) as $n)
+{
+	$rep->Numbers->forceNewElement()->Number->Value = $n;
+	$rep->Numbers->Number->Even = $n % 2 === 0 ? 'Yes' : 'No';
+	$rep->Numbers->Number->Hash = md5($n);
+}
+
+printXml($rep);
+
+
+
+
+

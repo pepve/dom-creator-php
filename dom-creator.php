@@ -15,6 +15,8 @@ class DomCreator
 	
 	private $_qualifyAttributes;
 	
+	private $_forceNewElement;
+	
 	/**
 	 * Start creating a new DOMDocument with the specified namespace URI,
 	 * namespace prefix, root element, and whether attributes will be
@@ -58,13 +60,14 @@ class DomCreator
 	}
 
 	private function __construct($doc, $node, $nsUri, $prefix,
-			$qualifyAttributes)
+			$qualifyAttributes, $forceNewElement = false)
 	{
 		$this->_doc = $doc;
 		$this->_node = $node;
 		$this->_nsUri = $nsUri;
 		$this->_prefix = $prefix;
 		$this->_qualifyAttributes = $qualifyAttributes;
+		$this->_forceNewElement = $forceNewElement;
 	}
 
 	/**
@@ -90,7 +93,8 @@ class DomCreator
 	public function __get($name)
 	{
 		if ($this->_node->lastChild !== null &&
-				$this->_node->lastChild->nodeName === $this->_prefix . $name)
+				$this->_node->lastChild->nodeName === $this->_prefix . $name &&
+				!$this->_forceNewElement)
 		{
 			$element = $this->_node->lastChild;
 		}
@@ -139,6 +143,12 @@ class DomCreator
 				$element->appendChild($text);
 			}
 		}
+	}
+	
+	public function forceNewElement()
+	{
+		return new self($this->_doc, $this->_node, $this->_nsUri,
+				$this->_prefix, $this->_qualifyAttributes, true);
 	}
 	
 	private function _import($element, $nodes)
