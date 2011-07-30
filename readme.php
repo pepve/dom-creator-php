@@ -12,7 +12,7 @@ A limited but simple API for creating DOMDocumentS in PHP.
 - Adding in (parts of) another DOMDocument
 <?php
 
-require 'dom-creator.php';
+require 'DomCreator.php';
 
 $examples['Example 1'] = <<<'EOT'
 $foo = DomCreator::create('http://example.com/foo', 'f', 'foo');

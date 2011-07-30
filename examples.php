@@ -1,6 +1,6 @@
 <?php
 
-require 'dom-creator.php';
+require 'DomCreator.php';
 
 function printXml($domCreator)
 {
