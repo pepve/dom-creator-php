@@ -9,6 +9,10 @@ function printXml($domCreator)
 	echo $document->saveXml();
 }
 
+
+###############################################################################
+###############################################################################
+
 $foo = DomCreator::create('http://example.com/foo', 'f', 'foo');
 
 $foo->ident->_type = 'person';
@@ -19,14 +23,9 @@ $foo->show->that->nesting->is->easy;
 
 printXml($foo);
 
-//<f:foo xmlns:f="http://example.com/foo">
-//  <f:ident type="person">
-//    <f:name>My Name</f:name>
-//    <f:number>1234</f:number>
-//  </f:ident>
-//  <f:content>Here is the content..</f:content>
-//</f:foo>
 
+###############################################################################
+###############################################################################
 
 $bar = DomCreator::createNoNamespace('Bar');
 
@@ -47,20 +46,9 @@ $bar->DomPart = $dom;
 
 printXml($bar);
 
-//<Bar>
-//  <One>1</One>
-//  <Two>2</Two>
-//  <Three>3</Three>
-//  <Sub>
-//    <A>Letter A</A>
-//    <B>Letter B</B>
-//    <C>Letter C</C>
-//  </Sub>
-//  <DomPart>
-//    <Test>value</Test>
-//  </DomPart>
-//</Bar>
 
+###############################################################################
+###############################################################################
 
 $dom = new DOMDocument();
 $test = $dom->createElement('test', 'value');
@@ -76,17 +64,13 @@ $super->dom = $dom;
 
 printXml($super);
 
-//<tst:element xmlns:tst="http://test.com/test">
-//  <tst:hello tst:to="you">world</tst:hello>
-//  <tst:dom>
-//    <test attr="1">value</test>
-//  </tst:dom>
-//</tst:element>
 
+###############################################################################
+###############################################################################
 
 $rep = DomCreator::createNoNamespace('Repetitive');
 
-foreach (range(5, 80, 7) as $n)
+foreach (range(3, 17, 7) as $n)
 {
 	$rep->Numbers->forceNewElement()->Number->Value = $n;
 	$rep->Numbers->Number->Even = $n % 2 === 0 ? 'Yes' : 'No';
@@ -94,8 +78,5 @@ foreach (range(5, 80, 7) as $n)
 }
 
 printXml($rep);
-
-
-
 
 
