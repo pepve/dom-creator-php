@@ -68,15 +68,34 @@ printXml($super);
 ###############################################################################
 ###############################################################################
 
-$rep = DomCreator::createNoNamespace('Repetitive');
+$rep = DomCreator::createNoNamespace('Numbers');
 
 foreach (range(3, 17, 7) as $n)
 {
-	$rep->Numbers->forceNewElement()->Number->Value = $n;
-	$rep->Numbers->Number->Even = $n % 2 === 0 ? 'Yes' : 'No';
-	$rep->Numbers->Number->Hash = md5($n);
+	$rep->Number->Value = $n;
+	$rep->Number->Even = $n % 2 === 0 ? 'Yes' : 'No';
+	$rep->Number->Hash = md5($n);
+	$rep->closeChild();
 }
 
 printXml($rep);
+
+
+###############################################################################
+###############################################################################
+
+$foo = DomCreator::create('http://example.com/foo', 'f', 'foo');
+
+$type = '_a:type';
+$foo->ident->$type = 'person';
+
+$foo->ident->__set('_xmlns:a', 'http://example.com/types');
+
+$foo->ident->name = 'My Name';
+$foo->ident->number = '1234';
+$foo->content = 'Here is the content..';
+
+printXml($foo);
+
 
 

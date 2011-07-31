@@ -15,7 +15,7 @@ class DomCreator
 	
 	private $_qualifyAttributes;
 	
-	private $_forceNewElement;
+	private $_lastChild;
 	
 	/**
 	 * Start creating a new DOMDocument with the specified namespace URI,
@@ -67,7 +67,6 @@ class DomCreator
 		$this->_nsUri = $nsUri;
 		$this->_prefix = $prefix;
 		$this->_qualifyAttributes = $qualifyAttributes;
-		$this->_forceNewElement = $forceNewElement;
 	}
 
 	/**
@@ -92,18 +91,18 @@ class DomCreator
 	 */
 	public function __get($name)
 	{
-		if ($this->_node->lastChild !== null &&
-				$this->_node->lastChild->nodeName === $this->_prefix . $name &&
-				!$this->_forceNewElement)
+		if ($this->_lastChild !== null &&
+				$this->_lastChild->_node->nodeName === $this->_prefix . $name)
 		{
-			$element = $this->_node->lastChild;
+			return $this->_lastChild;
 		}
 		else
 		{
 			$element = $this->_element($name);
+			$this->_lastChild = new self($this->_doc, $element,
+					$this->_nsUri, $this->_prefix, $this->_qualifyAttributes);
+			return $this->_lastChild;
 		}
-		return new self($this->_doc, $element, $this->_nsUri, $this->_prefix,
-				$this->_qualifyAttributes);
 	}
 
 	/**
@@ -128,6 +127,7 @@ class DomCreator
 		}
 		else
 		{
+			$this->_lastChild = null;
 			$element = $this->_element($name, $value);
 			if ($value instanceof self)
 			{
@@ -145,10 +145,12 @@ class DomCreator
 		}
 	}
 	
-	public function forceNewElement()
+	/**
+	 * Close the last child created.
+	 */
+	public function closeChild()
 	{
-		return new self($this->_doc, $this->_node, $this->_nsUri,
-				$this->_prefix, $this->_qualifyAttributes, true);
+		$this->_lastChild = null;
 	}
 	
 	private function _import($element, $nodes)
