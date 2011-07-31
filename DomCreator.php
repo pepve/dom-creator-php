@@ -7,7 +7,6 @@
  *
  * - Built with minimum verbosity in mind
  * - Works very well for straightforward schemas
- * - (Mixing namespaces in one tree isn't as nice)
  *
  * Short example:
  *
