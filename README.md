@@ -61,7 +61,7 @@ Get a property. This creates and appends a new element with the name of the prop
 
 ####  __set($name, $value)
 
-Set a property. If the property name starts with an underscore (`self::ATTRIBUTE_SIGN`) this creates and appends a new attribute with the given name (attribute sign stripped) and value. Else a new element is created with the value as its contents. The value can be another instance of this class or a DOMNode, in which case all of their children are  inserted in the new element.
+Set a property. If the property name starts with an underscore (`DomCreator::ATTRIBUTE_SIGN`) this creates and appends a new attribute with the given name (attribute sign stripped) and value. Else a new element is created with the value as its contents. The value can be another instance of this class or a DOMNode, in which case all of their children are inserted in the new element.
 
 ####  closeChild()
 
@@ -117,9 +117,11 @@ $bar->Two = 2;
 $bar->Three = 3;
 
 $subBar = DomCreator::createFragmentNoNamespace();
-foreach (array('A', 'B', 'C') as $letter)
+foreach (array('A', 'B') as $i => $letter)
 {
-	$subBar->$letter = "Letter $letter";
+	$subBar->Letter->Sequence = $i;
+	$subBar->Letter->Value = $letter;
+	$subBar->closeChild();
 }
 $bar->Sub = $subBar;
 
@@ -141,9 +143,14 @@ Output:
   <Two>2</Two>
   <Three>3</Three>
   <Sub>
-    <A>Letter A</A>
-    <B>Letter B</B>
-    <C>Letter C</C>
+    <Letter>
+      <Sequence>0</Sequence>
+      <Value>A</Value>
+    </Letter>
+    <Letter>
+      <Sequence>1</Sequence>
+      <Value>B</Value>
+    </Letter>
   </Sub>
   <DomPart>
     <Test>value</Test>

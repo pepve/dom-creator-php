@@ -81,9 +81,11 @@ $bar->Two = 2;
 $bar->Three = 3;
 
 $subBar = DomCreator::createFragmentNoNamespace();
-foreach (array('A', 'B', 'C') as $letter)
+foreach (array('A', 'B') as $i => $letter)
 {
-	$subBar->$letter = "Letter $letter";
+	$subBar->Letter->Sequence = $i;
+	$subBar->Letter->Value = $letter;
+	$subBar->closeChild();
 }
 $bar->Sub = $subBar;
 

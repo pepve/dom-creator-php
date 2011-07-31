@@ -150,11 +150,11 @@ class DomCreator
 
 	/**
 	 * Set a property. If the property name starts with an underscore
-	 * (`self::ATTRIBUTE_SIGN`) this creates and appends a new attribute with
-	 * the given name (attribute sign stripped) and value. Else a new element is
-	 * created with the value as its contents. The value can be another instance
-	 * of this class or a DOMNode, in which case all of their children are 
-	 * inserted in the new element.
+	 * (`DomCreator::ATTRIBUTE_SIGN`) this creates and appends a new attribute
+	 * with the given name (attribute sign stripped) and value. Else a new
+	 * element is created with the value as its contents. The value can be
+	 * another instance of this class or a DOMNode, in which case all of their
+	 * children are inserted in the new element.
 	 */
 	public function __set($name, $value)
 	{
