@@ -15,7 +15,7 @@ foreach ($matches as $match)
 	$declaration = $match[2];
 	
 	$comments = preg_replace("_^([ \t]*\* ?)_m", '', $comments);
-	$comments = preg_replace("_^([[:alnum:]].*)\n(?!$)_m", "\\1 ", $comments);
+	$comments = preg_replace("_^([[:alnum:](].*)\n(?!$)_m", "\\1 ", $comments);
 	$comments = preg_replace("_^\n_", '', $comments);
 	
 	if (strpos($declaration, 'class') !== false)
@@ -45,18 +45,14 @@ echo $doc['class'];
 
 echo "\n## The API\n";
 
-echo "\n### Static factory functions\n";
-
 foreach ($doc['static'] as $sign => $comments)
 {
-	echo "\n  `$doc[classname]::$sign`\n\n$comments";
+	echo "\n#### $doc[classname]::$sign\n\n$comments";
 }
-
-echo "\n### Instance functions\n";
 
 foreach ($doc['instance'] as $sign => $comments)
 {
-	echo "\n  `$sign`\n\n$comments";
+	echo "\n####  $sign\n\n$comments";
 }
 
 
