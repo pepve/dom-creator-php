@@ -49,7 +49,7 @@
  * `__get(..)` and `__set(..)` yourself. Although you should think of using
  * another API if this happens a lot.
  *
- * Originally at: https://github.com/pepve/dom-creator-php
+ * License: MIT
  */
 
 class DomCreator

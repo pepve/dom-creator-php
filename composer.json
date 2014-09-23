@@ -1,0 +1,9 @@
+{
+	"name": "pepve/dom-creator",
+	"description": "A limited but simple API for creating DOMDocumentS in PHP",
+	"homepage": "https://github.com/pepve/dom-creator-php",
+	"license": "MIT",
+	"autoload": {
+		"psr-0": { "DomCreator": "" }
+	}
+}
